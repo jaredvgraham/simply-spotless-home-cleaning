@@ -1,4 +1,5 @@
 import QuoteForm from "@/components/QuoteForm";
+import { companyContactEmail } from "@/backend/lib/mail";
 import Image from "next/image";
 
 type IconName =
@@ -481,10 +482,10 @@ export default function Home() {
               </li>
               <li>
                 <a
-                  href="mailto:hello@simplyspotlessclean.com"
-                  className="transition hover:text-navy"
+                  href={`mailto:${companyContactEmail}`}
+                  className="break-all transition hover:text-navy"
                 >
-                  hello@simplyspotlessclean.com
+                  {companyContactEmail}
                 </a>
               </li>
               <li className="flex items-center gap-2 pt-1">

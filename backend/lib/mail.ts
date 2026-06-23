@@ -2,6 +2,8 @@ import nodemailer from "nodemailer";
 
 const gmailUser = "faithglover08@gmail.com";
 
+export const companyContactEmail = "contactsimplyspotlesscleaning@yahoo.com";
+
 export function getMailTransporter() {
   const appPass = process.env.APP_PASS;
 

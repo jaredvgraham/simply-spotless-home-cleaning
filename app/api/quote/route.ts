@@ -1,4 +1,8 @@
-import { getMailTransporter, quoteRecipientEmail } from "@/backend/lib/mail";
+import {
+  companyContactEmail,
+  getMailTransporter,
+  quoteRecipientEmail,
+} from "@/backend/lib/mail";
 import { NextResponse } from "next/server";
 
 type QuotePayload = {
@@ -62,7 +66,7 @@ export async function POST(request: Request) {
 
     await transporter.sendMail({
       from: quoteRecipientEmail,
-      to: "contactsimplyspotlesscleaning@yahoo.com",
+      to: companyContactEmail,
       replyTo: details.email,
       subject: "Free Cleaning Quote Request",
       text: buildEmailBody(details),
