@@ -3,8 +3,6 @@
 import type { FormEvent } from "react";
 import { useState } from "react";
 
-const recipientEmail = "hello@simplyspotlesshomecleaning.com";
-
 type FieldIconName = "user" | "mail" | "phone" | "pin" | "message";
 
 function FieldIcon({ name }: { name: FieldIconName }) {
@@ -87,6 +85,7 @@ function TextField({
           <FieldIcon name={icon} />
         </span>
         <input
+          suppressHydrationWarning
           required={required}
           name={name}
           type={type}
@@ -101,41 +100,55 @@ function TextField({
 
 export default function QuoteForm() {
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setError("");
+    setIsSubmitting(true);
 
-    const formData = new FormData(event.currentTarget);
+    const form = event.currentTarget;
+    const formData = new FormData(form);
     const details = {
       firstName: getValue(formData, "firstName"),
       lastName: getValue(formData, "lastName"),
       email: getValue(formData, "email"),
       phone: getValue(formData, "phone"),
       postalCode: getValue(formData, "postalCode"),
-      message: getValue(formData, "message") || "No message provided.",
+      message: getValue(formData, "message"),
     };
 
-    const message = [
-      "Hi Faith,",
-      "",
-      "I would like a cleaning quote from Simply Spotless Cleaning LLC.",
-      "",
-      `First Name: ${details.firstName}`,
-      `Last Name: ${details.lastName}`,
-      `Email: ${details.email}`,
-      `Phone: ${details.phone}`,
-      `Postal Code: ${details.postalCode}`,
-      "",
-      "Message:",
-      details.message,
-    ].join("\n");
+    try {
+      const response = await fetch("/api/quote", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(details),
+      });
 
-    const mailtoUrl = `mailto:${recipientEmail}?subject=${encodeURIComponent(
-      "Free Cleaning Quote Request",
-    )}&body=${encodeURIComponent(message)}`;
+      if (!response.ok) {
+        const data = (await response.json().catch(() => null)) as {
+          error?: string;
+        } | null;
+        throw new Error(
+          data?.error || "Unable to send your quote request right now.",
+        );
+      }
 
-    window.location.href = mailtoUrl;
-    setSubmitted(true);
+      form.reset();
+      setSubmitted(true);
+    } catch (submitError) {
+      setSubmitted(false);
+      setError(
+        submitError instanceof Error
+          ? submitError.message
+          : "Unable to send your quote request right now.",
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -206,6 +219,7 @@ export default function QuoteForm() {
               <FieldIcon name="message" />
             </span>
             <textarea
+              suppressHydrationWarning
               name="message"
               rows={4}
               placeholder="Tell us how we can serve you better."
@@ -217,15 +231,22 @@ export default function QuoteForm() {
 
       <button
         type="submit"
-        className="mt-6 w-full rounded-full bg-sky-500 px-6 py-3.5 text-sm font-black text-white shadow-xl shadow-sky-100 transition hover:-translate-y-0.5 hover:bg-sky-600 sm:mt-8 sm:px-7 sm:py-4 sm:text-base"
+        disabled={isSubmitting}
+        className="mt-6 w-full rounded-full bg-sky-500 px-6 py-3.5 text-sm font-black text-white shadow-xl shadow-sky-100 transition hover:-translate-y-0.5 hover:bg-sky-600 disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:translate-y-0 sm:mt-8 sm:px-7 sm:py-4 sm:text-base"
       >
-        Request My Quote
+        {isSubmitting ? "Sending..." : "Request My Quote"}
       </button>
+
+      {error ? (
+        <p className="mt-4 rounded-2xl bg-red-50 p-4 text-sm font-semibold leading-6 text-red-800">
+          {error}
+        </p>
+      ) : null}
 
       {submitted ? (
         <p className="mt-4 rounded-2xl bg-sky-50 p-4 text-sm font-semibold leading-6 text-sky-800">
-          Your email app should open with the quote request filled in. Send it
-          from there so Faith receives the details.
+          Thanks! Your quote request was sent. Faith will follow up with you
+          soon.
         </p>
       ) : null}
     </form>
