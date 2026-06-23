@@ -3,22 +3,23 @@ import Image from "next/image";
 
 type IconName =
   | "sparkle"
-  | "spray"
+  | "heart"
   | "home"
-  | "calendar"
-  | "clipboard"
-  | "smile"
-  | "message"
-  | "shield"
   | "clock"
-  | "heart";
+  | "leaf"
+  | "box"
+  | "calendar"
+  | "check"
+  | "facebook";
 
 function Icon({
   name,
   className = "",
+  strokeWidth = "2",
 }: {
   name: IconName;
   className?: string;
+  strokeWidth?: string;
 }) {
   const paths = {
     sparkle: (
@@ -27,18 +28,34 @@ function Icon({
         <path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8L19 15Z" />
       </>
     ),
-    spray: (
-      <>
-        <path d="M9 3h6l1 4H8l1-4Z" />
-        <path d="M10 7h4v4l3 3v7H7v-7l3-3V7Z" />
-        <path d="M17 5h3" />
-      </>
+    heart: (
+      <path d="M20.8 8.6c0 5.2-8.8 10.4-8.8 10.4S3.2 13.8 3.2 8.6A4.6 4.6 0 0 1 12 6a4.6 4.6 0 0 1 8.8 2.6Z" />
     ),
     home: (
       <>
         <path d="M3 11.5 12 4l9 7.5" />
         <path d="M5 10.5V21h14V10.5" />
         <path d="M9 21v-6h6v6" />
+      </>
+    ),
+    clock: (
+      <>
+        <circle cx="12" cy="12" r="9" />
+        <path d="M12 7v5l3 2" />
+      </>
+    ),
+    leaf: (
+      <>
+        <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 18 2c1 2 2 4.5 2 8 0 5.5-4.5 10-9 10Z" />
+        <path d="M2 21c0-3 1.5-5.5 4-7" />
+      </>
+    ),
+    box: (
+      <>
+        <path d="M21 8v13H3V8" />
+        <path d="M1 8h22" />
+        <path d="M10 12h4" />
+        <path d="m12 8-8-4 8-4 8 4-8 4Z" />
       </>
     ),
     calendar: (
@@ -49,42 +66,9 @@ function Icon({
         <path d="M5 5h14v16H5z" />
       </>
     ),
-    clipboard: (
-      <>
-        <path d="M9 4h6l1 3H8l1-3Z" />
-        <path d="M7 6H5v15h14V6h-2" />
-        <path d="m9 14 2 2 4-5" />
-      </>
-    ),
-    smile: (
-      <>
-        <circle cx="12" cy="12" r="9" />
-        <path d="M8 14s1.5 2 4 2 4-2 4-2" />
-        <path d="M9 9h.01" />
-        <path d="M15 9h.01" />
-      </>
-    ),
-    message: (
-      <>
-        <path d="M4 5h16v11H8l-4 4V5Z" />
-        <path d="M8 9h8" />
-        <path d="M8 13h5" />
-      </>
-    ),
-    shield: (
-      <>
-        <path d="M12 3 5 6v5c0 4.5 3 8 7 10 4-2 7-5.5 7-10V6l-7-3Z" />
-        <path d="m9 12 2 2 4-4" />
-      </>
-    ),
-    clock: (
-      <>
-        <circle cx="12" cy="12" r="9" />
-        <path d="M12 7v5l3 2" />
-      </>
-    ),
-    heart: (
-      <path d="M20.8 8.6c0 5.2-8.8 10.4-8.8 10.4S3.2 13.8 3.2 8.6A4.6 4.6 0 0 1 12 6a4.6 4.6 0 0 1 8.8 2.6Z" />
+    check: <path d="m5 12 4 4 10-10" />,
+    facebook: (
+      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
     ),
   };
 
@@ -96,7 +80,7 @@ function Icon({
       stroke="currentColor"
       strokeLinecap="round"
       strokeLinejoin="round"
-      strokeWidth="2"
+      strokeWidth={strokeWidth}
       className={className}
     >
       {paths[name]}
@@ -104,454 +88,423 @@ function Icon({
   );
 }
 
+function NavLink({
+  href,
+  children,
+}: {
+  href: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <a
+      href={href}
+      className="text-sm font-medium text-navy/80 transition hover:text-navy"
+    >
+      {children}
+    </a>
+  );
+}
+
+function PrimaryButton({
+  href,
+  children,
+  className = "",
+}: {
+  href: string;
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <a
+      href={href}
+      className={`inline-flex items-center justify-center rounded-full bg-navy px-6 py-3 text-sm font-semibold text-white transition hover:bg-navy-dark ${className}`}
+    >
+      {children}
+    </a>
+  );
+}
+
 export default function Home() {
+  const values = [
+    {
+      icon: "sparkle" as const,
+      title: "Reliable",
+      text: "Clear communication, on-time service, and results you can count on.",
+    },
+    {
+      icon: "heart" as const,
+      title: "Detail-Oriented",
+      text: "Attention to the little things that make the biggest difference in how your home feels.",
+    },
+    {
+      icon: "home" as const,
+      title: "Trustworthy",
+      text: "Your home is treated with respect and care at every visit.",
+    },
+    {
+      icon: "clock" as const,
+      title: "Flexible",
+      text: "Weekly, biweekly, monthly, or one-time scheduling built around your routine.",
+    },
+    {
+      icon: "leaf" as const,
+      title: "Locally Owned",
+      text: "A locally owned business serving Plymouth, MA and surrounding areas.",
+    },
+  ];
+
   const services = [
     {
       icon: "home" as const,
-      title: "Standard Home Cleaning",
+      title: "Standard Clean",
+      image:
+        "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=700&q=80",
       description:
-        "A reliable reset for kitchens, bathrooms, bedrooms, and living spaces.",
-      details: ["Dusting", "Floors", "Counters", "Trash removal"],
+        "Regular upkeep focused on the everyday areas that keep your home feeling fresh.",
+      details: [
+        "Dusting all surfaces",
+        "Vacuuming & mopping floors",
+        "Kitchen cleaning (counters, sink, exterior appliances)",
+        "Bathroom cleaning & sanitizing",
+        "Trash removal",
+      ],
     },
     {
       icon: "sparkle" as const,
-      title: "Deep Cleaning",
+      title: "Deep Clean",
+      image:
+        "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=700&q=80",
       description:
-        "Extra attention for buildup, baseboards, appliances, and hard-to-reach areas.",
-      details: ["Baseboards", "Detail work", "Heavy buildup", "Appliances"],
+        "A more thorough clean for when your home needs extra care and attention.",
+      details: [
+        "Everything in a Standard Clean",
+        "Plus inside appliances (oven, fridge)",
+        "Baseboards & trim",
+        "Interior windows",
+        "Detailed scrubbing of buildup",
+        "Hard-to-reach areas",
+      ],
     },
     {
-      icon: "spray" as const,
+      icon: "box" as const,
       title: "Move-In / Move-Out",
+      image:
+        "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=700&q=80",
       description:
-        "A top-to-bottom clean to help make a home feel fresh before or after a move.",
-      details: ["Empty homes", "Cabinets", "Bathrooms", "Kitchen refresh"],
+        "Start fresh in a new space or leave one ready for the next chapter.",
+      details: [
+        "Top-to-bottom cleaning",
+        "Inside cabinets & drawers",
+        "Inside appliances",
+        "Closets cleaned",
+        "Baseboards, doors & light switches",
+        "Bathrooms fully sanitized",
+      ],
     },
     {
       icon: "calendar" as const,
       title: "Recurring Cleaning",
+      image:
+        "https://images.unsplash.com/photo-1582735689369-4fe89db7114c?w=700&q=80",
       description:
-        "Weekly, bi-weekly, or monthly visits to keep your home consistently spotless.",
-      details: ["Weekly", "Bi-weekly", "Monthly", "Custom schedule"],
-    },
-  ];
-
-  const steps = [
-    {
-      icon: "message" as const,
-      title: "Tell Faith what you need",
-      text: "Share your home size, priorities, and timing so the visit can be tailored to your space.",
-    },
-    {
-      icon: "clipboard" as const,
-      title: "Get a spotless plan",
-      text: "Faith brings a clear checklist, reliable communication, and careful attention to the rooms that matter most.",
-    },
-    {
-      icon: "smile" as const,
-      title: "Enjoy a lighter home",
-      text: "Come back to fresh surfaces, tidy rooms, and the calm feeling of a home that has been cared for.",
-    },
-  ];
-
-  const benefits = [
-    {
-      icon: "message" as const,
-      text: "Friendly, consistent communication from Faith",
-    },
-    {
-      icon: "sparkle" as const,
-      text: "Light blue, fresh-home attention to bright surfaces",
-    },
-    {
-      icon: "clock" as const,
-      text: "Flexible cleaning for weekly, biweekly, and one-time needs",
-    },
-    {
-      icon: "heart" as const,
-      text: "Respectful service for kitchens, baths, bedrooms, and living areas",
-    },
-  ];
-
-  const beforeAfterImages = [
-    {
-      src: "/fba1.png",
-      title: "Living room and kitchen refresh",
-      description:
-        "A cluttered shared space reset into a bright, tidy room ready to enjoy.",
-    },
-    {
-      src: "/fba2.png",
-      title: "Living room and kitchen deep clean",
-      description:
-        "A cluttered shared space reset into a bright, tidy room ready to enjoy.",
+        "A consistent cleaning routine with weekly, biweekly, or monthly visits.",
+      details: [
+        "Customized to your needs",
+        "Consistent, reliable service",
+        "Save time and enjoy a cleaner home",
+        "Peace of mind",
+      ],
     },
   ];
 
   return (
-    <main className="min-h-screen overflow-hidden bg-white text-slate-950">
-      <section className="relative isolate bg-[linear-gradient(135deg,#effbff_0%,#ffffff_48%,#d9f3ff_100%)]">
-        <div className="absolute inset-x-0 top-0 -z-10 h-80 bg-[radial-gradient(circle_at_20%_20%,rgba(56,189,248,0.22),transparent_32%),radial-gradient(circle_at_85%_10%,rgba(14,165,233,0.18),transparent_30%)]" />
-        <header className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 sm:py-6 lg:px-8">
-          <a href="#top" className="flex items-center gap-3">
-            <span className="relative flex size-12 items-center justify-center overflow-hidden rounded-full bg-white shadow-lg shadow-sky-100 ring-1 ring-sky-100 sm:size-16">
-              <Image
-                src="/logo.png"
-                alt="Simply Spotless Cleaning Services logo"
-                fill
-                sizes="(max-width: 640px) 48px, 64px"
-                className="object-contain p-1"
-                priority
-              />
-            </span>
-            <span className="hidden text-lg font-black tracking-tight text-slate-950 sm:block">
-              Simply Spotless Cleaning Services
-            </span>
-          </a>
-          <nav
-            aria-label="Main navigation"
-            className="hidden items-center gap-8 text-sm font-semibold text-slate-700 md:flex"
-          >
-            <a className="transition hover:text-sky-600" href="#services">
-              Services
-            </a>
-            <a className="transition hover:text-sky-600" href="#results">
-              Results
-            </a>
-            <a className="transition hover:text-sky-600" href="#about">
-              About
-            </a>
-            <a className="transition hover:text-sky-600" href="#contact">
-              Contact
-            </a>
-          </nav>
-        </header>
+    <main className="min-h-screen bg-white">
+      <header className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-5 sm:px-6 lg:px-8">
+        <a href="#top" className="flex shrink-0 items-center gap-3">
+          <Image
+            src="/logo.png"
+            alt="Simply Spotless Cleaning Services logo"
+            width={72}
+            height={72}
+            className="h-14 w-14 object-contain sm:h-16 sm:w-16"
+            priority
+          />
+        </a>
 
-        <div
-          id="top"
-          className="mx-auto grid max-w-7xl gap-6 px-4 pb-12 pt-2 sm:gap-8 sm:px-6 sm:pb-16 sm:pt-4 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12 lg:px-8 lg:pb-28 lg:pt-16"
+        <nav
+          aria-label="Main navigation"
+          className="hidden items-center gap-8 lg:flex"
         >
-          <div className="flex flex-col justify-center">
-            <p className="mb-3 w-fit rounded-full border border-sky-200 bg-white/80 px-3 py-1.5 text-xs font-bold text-sky-700 shadow-sm sm:mb-5 sm:px-4 sm:py-2 sm:text-sm">
-              Faith-led home cleaning
-            </p>
-            <h1 className="max-w-4xl text-[1.85rem] font-black leading-[1.12] tracking-tight text-slate-950 sm:text-5xl sm:leading-tight lg:text-7xl">
-              A brighter, calmer home starts with a spotless clean.
-            </h1>
-            <p className="mt-4 max-w-2xl text-base leading-7 text-slate-700 sm:mt-6 sm:text-lg sm:leading-8 lg:text-xl">
-              Simply Spotless Home Cleaning is run by Faith and built around
-              reliable, detailed care for busy households that want fresh rooms,
-              gleaming surfaces, and less stress.
-            </p>
-            <div className="mt-5 flex flex-col gap-3 sm:mt-9 sm:flex-row sm:gap-4">
-              <a
-                href="tel:+15085706658"
-                className="inline-flex items-center justify-center rounded-full bg-sky-500 px-6 py-3 text-sm font-bold text-white shadow-xl shadow-sky-200 transition hover:-translate-y-0.5 hover:bg-sky-600 sm:px-7 sm:py-4 sm:text-base"
-              >
-                Call Faith
-              </a>
-              <a
-                href="#quote-form"
-                className="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white px-6 py-3 text-sm font-bold text-slate-950 transition hover:-translate-y-0.5 hover:border-sky-300 hover:text-sky-700 sm:px-7 sm:py-4 sm:text-base"
-              >
-                Request a Quote
-              </a>
-            </div>
-            <div className="mt-6 hidden max-w-xl grid-cols-3 gap-4 text-center sm:mt-10 sm:grid sm:text-left">
-              <div>
-                <p className="text-3xl font-black text-sky-600">100%</p>
-                <p className="mt-1 text-sm font-semibold text-slate-600">
-                  Detail focused
-                </p>
-              </div>
-              <div>
-                <p className="text-3xl font-black text-sky-600">Faith</p>
-                <p className="mt-1 text-sm font-semibold text-slate-600">
-                  Owner operated
-                </p>
-              </div>
-              <div>
-                <p className="text-3xl font-black text-sky-600">Fresh</p>
-                <p className="mt-1 text-sm font-semibold text-slate-600">
-                  Every visit
-                </p>
-              </div>
-            </div>
-          </div>
+          <NavLink href="#services">Services</NavLink>
+          <NavLink href="#about">About</NavLink>
+          <NavLink href="#why-choose-us">What to Expect</NavLink>
+          <NavLink href="#reviews">Reviews</NavLink>
+          <NavLink href="#contact">Contact</NavLink>
+        </nav>
 
-          <div>
-            <div className="rounded-3xl border border-sky-100 bg-white p-3 shadow-xl shadow-sky-100 sm:rounded-4xl sm:p-5 sm:shadow-2xl">
-              <div className="rounded-2xl bg-sky-50 p-2 sm:rounded-3xl sm:p-4">
-                <div className="relative aspect-[16/10] overflow-hidden rounded-xl bg-sky-100 sm:aspect-video sm:rounded-[1.25rem]">
-                  <Image
-                    src="/ai%20fath1%20.png"
-                    alt="Faith holding cleaning supplies in a bright kitchen"
-                    fill
-                    priority
-                    sizes="(max-width: 1024px) 100vw, 46vw"
-                    className="object-cover object-center"
-                  />
-                </div>
-                <div className="mt-3 hidden rounded-2xl bg-white px-4 py-3 shadow-sm sm:mt-4 sm:block sm:px-5 sm:py-4">
-                  <p className="text-lg font-black text-slate-950">
-                    Polished rooms. Peaceful routines.
-                  </p>
-                  <p className="mt-1 text-sm font-semibold text-slate-600">
-                    Faith brings the supplies, care, and detail.
-                  </p>
-                </div>
-              </div>
+        <PrimaryButton
+          href="#quote-form"
+          className="shrink-0 px-5 py-2.5 text-sm"
+        >
+          Request a Quote
+        </PrimaryButton>
+      </header>
+
+      <section
+        id="top"
+        className="mx-auto grid max-w-7xl items-center gap-10 px-4 pb-16 pt-4 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-8 lg:pb-24 lg:pt-8"
+      >
+        <div id="about">
+          <p className="mb-5 inline-block rounded-full bg-sky-soft px-4 py-2 text-xs font-bold uppercase tracking-[0.15em] text-navy">
+            Plymouth, MA &amp; Surrounding Areas
+          </p>
+          <h1 className="font-serif text-4xl leading-tight text-navy sm:text-5xl lg:text-[3.25rem] lg:leading-[1.15]">
+            A clean home.
+            <br />
+            More time for{" "}
+            <span className="font-script text-4xl text-sky-accent sm:text-5xl lg:text-[3rem]">
+              what matters
+            </span>
+            <span className="font-script text-sky-accent"> ♡</span>
+          </h1>
+          <p className="mt-6 max-w-xl text-base leading-7 text-navy/75 sm:text-lg sm:leading-8">
+            Reliable home cleaning tailored to your space and schedule. Every
+            visit focuses on the details that help your home feel calm, fresh,
+            and well cared for.
+          </p>
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:gap-4">
+            <PrimaryButton href="#quote-form">Request a Quote →</PrimaryButton>
+            <a
+              href="#services"
+              className="inline-flex items-center justify-center rounded-full border-2 border-navy px-6 py-3 text-sm font-semibold text-navy transition hover:bg-sky-soft"
+            >
+              View Services
+            </a>
+          </div>
+        </div>
+
+        <div className="relative">
+          <div className="overflow-hidden rounded-[2rem] shadow-xl shadow-sky-soft">
+            <div className="relative aspect-[4/3]">
+              <Image
+                src="/ai%20fath1%20.png"
+                alt="Bright, clean kitchen with marble countertops"
+                fill
+                priority
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover"
+              />
             </div>
           </div>
         </div>
       </section>
 
       <section
-        id="services"
-        className="bg-[linear-gradient(180deg,#f0fbff_0%,#ffffff_100%)] px-6 py-20 text-slate-950 lg:px-8"
+        id="why-choose-us"
+        className="border-y border-sky-soft bg-white px-4 py-14 sm:px-6 lg:px-8"
       >
-        <div className="mx-auto max-w-7xl">
-          <div className="grid gap-6 lg:grid-cols-[0.85fr_1.15fr] lg:items-end">
-            <div>
-              <p className="text-sm font-black uppercase tracking-[0.3em] text-sky-600">
-                Services
-              </p>
-              <h2 className="mt-4 text-4xl font-black tracking-tight sm:text-5xl">
-                Clear cleaning options for every kind of home.
-              </h2>
-            </div>
-            <p className="max-w-2xl text-lg leading-8 text-slate-600 lg:justify-self-end">
-              Pick the clean that fits your space, schedule, and level of
-              detail. Faith can help with one-time resets, regular upkeep, and
-              bigger deep-cleaning projects.
-            </p>
-          </div>
-
-          <div className="mt-12 grid gap-5 md:grid-cols-2">
-            {services.map((service, index) => (
-              <article
-                key={service.title}
-                className="rounded-3xl border border-sky-100 bg-white p-6 text-slate-950 shadow-xl shadow-sky-100 transition hover:-translate-y-1 hover:border-sky-200 hover:shadow-sky-200"
-              >
-                <div className="flex items-start gap-5">
-                  <span className="flex size-14 shrink-0 items-center justify-center rounded-2xl bg-sky-100 text-sky-700">
-                    <Icon name={service.icon} className="size-7" />
-                  </span>
-                  <div>
-                    <p className="text-sm font-black uppercase tracking-[0.2em] text-sky-600">
-                      Service {String(index + 1).padStart(2, "0")}
-                    </p>
-                    <h3 className="text-2xl font-black tracking-tight">
-                      {service.title}
-                    </h3>
-                    <p className="mt-3 text-base leading-7 text-slate-600">
-                      {service.description}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="mt-6 flex flex-wrap gap-2">
-                  {service.details.map((detail) => (
-                    <span
-                      key={detail}
-                      className="rounded-full bg-sky-50 px-3 py-2 text-sm font-bold text-sky-800"
-                    >
-                      {detail}
-                    </span>
-                  ))}
-                </div>
-              </article>
-            ))}
-          </div>
-
-          <div className="mt-8 rounded-3xl border border-sky-100 bg-white p-6 text-center shadow-sm">
-            <p className="text-lg font-bold leading-8 text-slate-700">
-              Not sure what you need? Send a quick quote request and Faith will
-              help match the service to your home.
-            </p>
-            <a
-              href="#quote-form"
-              className="mt-5 inline-flex rounded-full bg-sky-500 px-6 py-3 text-sm font-black text-white shadow-lg shadow-sky-100 transition hover:-translate-y-0.5 hover:bg-sky-600"
-            >
-              Get a Free Quote
-            </a>
-          </div>
+        <div className="mx-auto grid max-w-7xl gap-10 sm:grid-cols-2 lg:grid-cols-5 lg:gap-6">
+          {values.map((item) => (
+            <article key={item.title} className="text-center">
+              <div className="mx-auto mb-4 flex size-12 items-center justify-center rounded-full bg-sky-soft text-sky-accent">
+                <Icon name={item.icon} className="size-5" />
+              </div>
+              <h3 className="font-serif text-lg text-navy">{item.title}</h3>
+              <p className="mt-2 text-sm leading-6 text-navy/70">{item.text}</p>
+            </article>
+          ))}
         </div>
       </section>
 
-      <section id="results" className="bg-white px-6 py-20 lg:px-8">
-        <div className="mx-auto max-w-7xl">
-          <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
-            <div>
-              <p className="text-sm font-black uppercase tracking-[0.3em] text-sky-600">
-                Before & After
-              </p>
-              <h2 className="mt-4 text-4xl font-black tracking-tight text-slate-950 sm:text-5xl">
-                See the Simply Spotless difference.
-              </h2>
-            </div>
-            <p className="max-w-2xl text-lg leading-8 text-slate-600 lg:justify-self-end">
-              Real transformations help show the care, detail, and fresh-home
-              feeling Faith brings to every cleaning visit.
-            </p>
-          </div>
+      <section id="services" className="px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
+        <div className="mx-auto max-w-7xl text-center">
+          <p className="text-xs font-bold uppercase tracking-[0.25em] text-sky-accent">
+            Cleaning Services
+          </p>
+          <h2 className="mt-4 font-serif text-3xl text-navy sm:text-4xl lg:text-[2.75rem]">
+            Cleaning options tailored to your home and lifestyle
+            <span className="font-script text-sky-accent"> ♡</span>
+          </h2>
+        </div>
 
-          <div className="mt-12 grid gap-6 md:grid-cols-2">
-            {beforeAfterImages.map((item) => (
-              <article
-                key={item.src}
-                className="overflow-hidden rounded-4xl border border-sky-100 bg-sky-50 p-4 shadow-xl shadow-sky-100"
-              >
-                <div className="relative aspect-square overflow-hidden rounded-3xl bg-white">
+        <div className="mx-auto mt-12 grid max-w-7xl gap-6 sm:grid-cols-2 xl:grid-cols-4">
+          {services.map((service) => (
+            <article
+              key={service.title}
+              className="overflow-hidden rounded-3xl border border-sky-soft bg-white shadow-sm"
+            >
+              <div className="relative">
+                <div className="relative aspect-[4/3]">
                   <Image
-                    src={item.src}
-                    alt={`${item.title} before and after cleaning result`}
+                    src={service.image}
+                    alt={service.title}
                     fill
-                    sizes="(max-width: 768px) 100vw, 50vw"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 25vw"
                     className="object-cover"
                   />
                 </div>
-                <div className="p-4">
-                  <div className="mb-4 flex flex-wrap gap-2">
-                    <span className="rounded-full bg-white px-3 py-2 text-xs font-black uppercase tracking-[0.2em] text-slate-600">
-                      Before
-                    </span>
-                    <span className="rounded-full bg-sky-500 px-3 py-2 text-xs font-black uppercase tracking-[0.2em] text-white">
-                      After
-                    </span>
-                  </div>
-                  <h3 className="text-2xl font-black tracking-tight text-slate-950">
-                    {item.title}
-                  </h3>
-                  <p className="mt-3 leading-7 text-slate-600">
-                    {item.description}
-                  </p>
-                </div>
-              </article>
-            ))}
-          </div>
+                <span className="absolute -bottom-5 left-1/2 flex size-10 -translate-x-1/2 items-center justify-center rounded-full border-4 border-white bg-sky-soft text-sky-accent">
+                  <Icon name={service.icon} className="size-4" />
+                </span>
+              </div>
+
+              <div className="px-5 pb-6 pt-8 text-center">
+                <h3 className="font-serif text-xl text-navy">
+                  {service.title}
+                </h3>
+                <p className="mt-3 text-sm leading-6 text-navy/70">
+                  {service.description}
+                </p>
+                <ul className="mt-5 space-y-2.5 text-left">
+                  {service.details.map((detail) => (
+                    <li
+                      key={detail}
+                      className="flex items-start gap-2.5 text-sm text-navy/80"
+                    >
+                      <span className="mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full bg-sky-soft text-sky-accent">
+                        <Icon
+                          name="check"
+                          className="size-2.5"
+                          strokeWidth="3"
+                        />
+                      </span>
+                      {detail}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </article>
+          ))}
         </div>
       </section>
 
-      <section id="about" className="px-6 py-20 lg:px-8">
-        <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.9fr_1.1fr]">
-          <div className="rounded-4xl bg-sky-100 p-8">
-            <div className="rounded-3xl bg-white p-8 shadow-xl shadow-sky-100">
-              <p className="text-sm font-black uppercase tracking-[0.3em] text-sky-600">
-                Meet Faith
-              </p>
-              <h2 className="mt-4 text-4xl font-black tracking-tight text-slate-950">
-                Owner-run care from someone who treats details like they matter.
-              </h2>
-              <p className="mt-6 text-lg leading-8 text-slate-700">
-                Faith started Simply Spotless Home Cleaning to give families a
-                dependable, friendly cleaning experience. Every visit is guided
-                by respect for your home, clear communication, and a simple
-                goal: make the space feel easier to live in.
-              </p>
+      <section
+        id="quote-form"
+        className="bg-sky-soft px-4 py-16 sm:px-6 lg:px-8"
+      >
+        <div className="mx-auto max-w-3xl">
+          <div className="mb-8 text-center">
+            <p className="text-xs font-bold uppercase tracking-[0.25em] text-sky-accent">
+              Get in Touch
+            </p>
+            <h2 className="mt-3 font-serif text-3xl text-navy sm:text-4xl">
+              Request a Free Quote
+            </h2>
+            <p className="mt-3 text-base leading-7 text-navy/70">
+              Share a few details about your home and schedule. You&apos;ll
+              receive a personalized quote with recommended service options.
+            </p>
+          </div>
+          <QuoteForm />
+        </div>
+      </section>
+
+      <section
+        id="reviews"
+        className="mx-4 mb-16 overflow-hidden rounded-[2rem] bg-sky-soft sm:mx-6 lg:mx-8"
+      >
+        <div className="mx-auto grid max-w-7xl items-center gap-8 px-6 py-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-12 lg:px-12 lg:py-16">
+          <div className="flex justify-center lg:justify-start">
+            <div className="relative size-56 overflow-hidden rounded-full shadow-lg sm:size-64">
+              <Image
+                src="https://images.unsplash.com/photo-1628177142898-93e36e4e3a50?w=500&q=80"
+                alt="Cleaning supplies in a bucket"
+                fill
+                sizes="256px"
+                className="object-cover"
+              />
             </div>
           </div>
 
-          <div className="grid gap-5 sm:grid-cols-3">
-            {steps.map((step, index) => (
-              <article
-                key={step.title}
-                className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm"
-              >
-                <div className="flex items-center justify-between gap-4">
-                  <span className="flex size-12 items-center justify-center rounded-2xl bg-sky-100 text-sky-600">
-                    <Icon name={step.icon} className="size-6" />
-                  </span>
-                  <p className="text-sm font-black text-sky-500">
-                    {String(index + 1).padStart(2, "0")}
-                  </p>
-                </div>
-                <h3 className="mt-8 text-xl font-black text-slate-950">
-                  {step.title}
-                </h3>
-                <p className="mt-4 leading-7 text-slate-600">{step.text}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-sky-50 px-6 py-20 lg:px-8">
-        <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-3">
-          <div className="lg:col-span-1">
-            <p className="text-sm font-black uppercase tracking-[0.3em] text-sky-700">
-              Why choose us
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.25em] text-sky-accent">
+              Ready for a Spotless Home?
             </p>
-            <h2 className="mt-4 text-4xl font-black tracking-tight text-slate-950">
-              Clean spaces, clear expectations.
+            <h2 className="mt-3 font-serif text-3xl text-navy sm:text-4xl lg:text-[2.5rem]">
+              A spotless home is closer than you think.
+              <span className="font-script text-sky-accent"> ♡</span>
             </h2>
-          </div>
-          <div className="grid gap-5 sm:grid-cols-2 lg:col-span-2">
-            {benefits.map((item) => (
-              <div
-                key={item.text}
-                className="flex gap-4 rounded-3xl bg-white p-6 shadow-sm"
-              >
-                <span className="mt-1 flex size-10 shrink-0 items-center justify-center rounded-2xl bg-sky-100 text-sky-600">
-                  <Icon name={item.icon} className="size-5" />
-                </span>
-                <p className="text-lg font-bold leading-7 text-slate-800">
-                  {item.text}
-                </p>
-              </div>
-            ))}
+            <p className="mt-4 max-w-xl text-base leading-7 text-navy/75">
+              Request a free quote to get a cleaning plan built around your
+              home, your needs, and your schedule.
+            </p>
+            <PrimaryButton href="#quote-form" className="mt-8">
+              Request a Quote →
+            </PrimaryButton>
           </div>
         </div>
       </section>
 
-      <section id="contact" className="bg-white px-4 py-12 sm:px-6 sm:py-20 lg:px-8">
-        <div className="mx-auto max-w-7xl overflow-hidden rounded-3xl border border-sky-100 bg-sky-50 shadow-2xl shadow-sky-100 sm:rounded-4xl">
-          <div className="grid min-w-0 gap-6 p-4 text-slate-950 sm:gap-8 sm:p-8 lg:grid-cols-[0.8fr_1.2fr] lg:p-12">
-            <div className="min-w-0">
-              <div className="mb-6 w-fit rounded-2xl border border-sky-100 bg-white p-3 shadow-sm sm:mb-8 sm:rounded-3xl sm:p-4">
-                <Image
-                  src="/logo.png"
-                  alt="Simply Spotless Cleaning Services logo"
-                  width={160}
-                  height={160}
-                  className="h-20 w-20 object-contain sm:h-28 sm:w-28 lg:h-32 lg:w-32"
-                />
-              </div>
-              <p className="text-xs font-black uppercase tracking-[0.25em] text-sky-600 sm:text-sm sm:tracking-[0.3em]">
-                Book your clean
-              </p>
-              <h2 className="mt-3 text-3xl font-black tracking-tight sm:mt-4 sm:text-4xl lg:text-5xl">
-                Ready for a home that feels simply spotless?
-              </h2>
-              <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600 sm:mt-6 sm:text-lg sm:leading-8">
-                Fill out the quote request and Faith will have the details she
-                needs to understand your home, schedule, and cleaning
-                priorities.
-              </p>
-              <div className="mt-6 rounded-2xl border border-sky-100 bg-white p-4 shadow-sm sm:mt-8 sm:rounded-3xl sm:p-6">
-                <p className="text-xs font-black uppercase tracking-[0.2em] text-sky-600 sm:text-sm sm:tracking-[0.25em]">
-                  Prefer direct contact?
-                </p>
+      <footer
+        id="contact"
+        className="border-t border-sky-soft bg-white px-4 py-14 sm:px-6 lg:px-8"
+      >
+        <div className="mx-auto grid max-w-7xl gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
+          <div>
+            <p className="font-serif text-lg text-navy">
+              Simply Spotless Cleaning Services
+            </p>
+            <p className="mt-3 text-sm leading-6 text-navy/70">
+              Plymouth, MA &amp; Surrounding Areas
+            </p>
+            <p className="mt-1 text-sm text-navy/70">Fully Insured</p>
+          </div>
+
+          <div>
+            <p className="text-sm font-bold text-navy">Quick Links</p>
+            <ul className="mt-4 space-y-2.5">
+              <li>
+                <NavLink href="#services">Services</NavLink>
+              </li>
+              <li>
+                <NavLink href="#about">About</NavLink>
+              </li>
+              <li>
+                <NavLink href="#reviews">Reviews</NavLink>
+              </li>
+              <li>
+                <NavLink href="#contact">Contact</NavLink>
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <p className="text-sm font-bold text-navy">Get in Touch</p>
+            <ul className="mt-4 space-y-2.5 text-sm text-navy/70">
+              <li>
                 <a
                   href="tel:+15085706658"
-                  className="mt-4 block text-xl font-black text-slate-950 transition hover:text-sky-600 sm:mt-5 sm:text-2xl"
+                  className="transition hover:text-navy"
                 >
-                  +1 (508) 570-6658
+                  (508) 570-6658
                 </a>
+              </li>
+              <li>
                 <a
-                  href="mailto:hello@simplyspotlesshomecleaning.com"
-                  className="mt-2 block break-all text-sm font-bold text-slate-600 transition hover:text-sky-600 sm:mt-3 sm:text-base"
+                  href="mailto:hello@simplyspotlessclean.com"
+                  className="transition hover:text-navy"
                 >
-                  hello@simplyspotlesshomecleaning.com
+                  hello@simplyspotlessclean.com
                 </a>
-              </div>
-            </div>
-            <div className="min-w-0 w-full">
-              <QuoteForm />
-            </div>
+              </li>
+              <li className="flex items-center gap-2 pt-1">
+                <Icon name="facebook" className="size-4 text-sky-accent" />
+                <span>simplyspotlessclean</span>
+              </li>
+            </ul>
+          </div>
+
+          <div className="flex items-start justify-start sm:justify-end">
+            <Image
+              src="/logo.png"
+              alt="Simply Spotless Cleaning Services logo"
+              width={120}
+              height={120}
+              className="h-24 w-24 object-contain sm:h-28 sm:w-28"
+            />
           </div>
         </div>
-      </section>
+      </footer>
     </main>
   );
 }

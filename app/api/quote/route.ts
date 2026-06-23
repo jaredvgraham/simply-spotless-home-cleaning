@@ -6,7 +6,7 @@ type QuotePayload = {
   lastName?: string;
   email?: string;
   phone?: string;
-  postalCode?: string;
+  town?: string;
   message?: string;
 };
 
@@ -22,7 +22,7 @@ function buildEmailBody(details: Required<QuotePayload>) {
     `Last Name: ${details.lastName}`,
     `Email: ${details.email}`,
     `Phone: ${details.phone}`,
-    `Postal Code: ${details.postalCode}`,
+    `Town: ${details.town}`,
     "",
     "Message:",
     details.message || "No message provided.",
@@ -46,13 +46,13 @@ export async function POST(request: Request) {
     lastName: getString(payload.lastName),
     email: getString(payload.email),
     phone: getString(payload.phone),
-    postalCode: getString(payload.postalCode),
+    town: getString(payload.town),
     message: getString(payload.message),
   };
 
-  if (!details.email || !details.phone || !details.postalCode) {
+  if (!details.email || !details.phone || !details.town) {
     return NextResponse.json(
-      { error: "Email, phone, and postal code are required." },
+      { error: "Email, phone, and town are required." },
       { status: 400 },
     );
   }

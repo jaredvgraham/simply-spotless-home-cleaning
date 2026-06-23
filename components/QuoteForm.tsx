@@ -1,6 +1,7 @@
 "use client";
 
 import type { FormEvent } from "react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 type FieldIconName = "user" | "mail" | "phone" | "pin" | "message";
@@ -76,12 +77,12 @@ function TextField({
 }>) {
   return (
     <label className="block">
-      <span className="text-sm font-black text-slate-700 sm:text-base">
+      <span className="text-sm font-semibold text-navy">
         {label}
         {required ? " *" : ""}
       </span>
-      <span className="relative mt-2 block min-w-0 sm:mt-3">
-        <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 sm:left-4">
+      <span className="relative mt-2 block min-w-0">
+        <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sky-accent sm:left-4">
           <FieldIcon name={icon} />
         </span>
         <input
@@ -91,7 +92,7 @@ function TextField({
           type={type}
           autoComplete={autoComplete}
           placeholder={placeholder}
-          className="box-border min-w-0 w-full max-w-full rounded-xl border border-slate-300 bg-white py-3 pl-10 pr-4 text-base text-slate-950 outline-none transition placeholder:text-slate-500 focus:border-sky-400 focus:ring-4 focus:ring-sky-100 sm:py-4 sm:pl-12 sm:pr-5 sm:text-lg"
+          className="box-border min-w-0 w-full max-w-full rounded-xl border border-sky-soft bg-white py-3 pl-10 pr-4 text-base text-navy outline-none transition placeholder:text-navy/40 focus:border-sky-accent focus:ring-2 focus:ring-sky-soft sm:pl-12"
         />
       </span>
     </label>
@@ -99,7 +100,7 @@ function TextField({
 }
 
 export default function QuoteForm() {
-  const [submitted, setSubmitted] = useState(false);
+  const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
 
@@ -115,7 +116,7 @@ export default function QuoteForm() {
       lastName: getValue(formData, "lastName"),
       email: getValue(formData, "email"),
       phone: getValue(formData, "phone"),
-      postalCode: getValue(formData, "postalCode"),
+      town: getValue(formData, "town"),
       message: getValue(formData, "message"),
     };
 
@@ -138,9 +139,8 @@ export default function QuoteForm() {
       }
 
       form.reset();
-      setSubmitted(true);
+      router.push("/thank-you");
     } catch (submitError) {
-      setSubmitted(false);
       setError(
         submitError instanceof Error
           ? submitError.message
@@ -153,22 +153,10 @@ export default function QuoteForm() {
 
   return (
     <form
-      id="quote-form"
       onSubmit={handleSubmit}
-      className="min-w-0 w-full max-w-full scroll-mt-24 rounded-2xl bg-white p-4 text-slate-950 sm:rounded-3xl sm:p-6 lg:p-8"
+      className="scroll-mt-24 rounded-3xl border border-sky-soft bg-white p-6 shadow-sm sm:p-8"
     >
-      <p className="text-xs font-black uppercase tracking-[0.2em] text-sky-600 sm:text-sm sm:tracking-[0.25em]">
-        Free quote form
-      </p>
-      <h3 className="mt-2 text-2xl font-black tracking-tight text-slate-950 sm:mt-3 sm:text-3xl">
-        Free Cleaning Quote Request
-      </h3>
-      <p className="mt-2 text-sm leading-6 text-slate-600 sm:mt-3 sm:text-base sm:leading-7">
-        Tell us how we can serve you better and Faith will follow up with a
-        personalized quote.
-      </p>
-
-      <div className="mt-6 space-y-5 sm:mt-8 sm:space-y-6">
+      <div className="grid gap-5 sm:grid-cols-2">
         <TextField
           label="First Name"
           name="firstName"
@@ -183,6 +171,9 @@ export default function QuoteForm() {
           autoComplete="family-name"
           icon="user"
         />
+      </div>
+
+      <div className="mt-5 space-y-5">
         <TextField
           required
           label="Email"
@@ -203,27 +194,25 @@ export default function QuoteForm() {
         />
         <TextField
           required
-          label="Postal Code"
-          name="postalCode"
-          placeholder="ZIP or postal code"
-          autoComplete="postal-code"
+          label="Town"
+          name="town"
+          placeholder="e.g. Plymouth, Duxbury"
+          autoComplete="address-level2"
           icon="pin"
         />
 
         <label className="block min-w-0">
-          <span className="text-sm font-black text-slate-700 sm:text-base">
-            Message
-          </span>
-          <span className="relative mt-2 block min-w-0 sm:mt-3">
-            <span className="pointer-events-none absolute left-3 top-3.5 text-slate-400 sm:left-4 sm:top-4">
+          <span className="text-sm font-semibold text-navy">Message</span>
+          <span className="relative mt-2 block min-w-0">
+            <span className="pointer-events-none absolute left-3 top-3.5 text-sky-accent sm:left-4">
               <FieldIcon name="message" />
             </span>
             <textarea
               suppressHydrationWarning
               name="message"
-              rows={4}
-              placeholder="Tell us how we can serve you better."
-              className="box-border min-w-0 w-full max-w-full resize-none rounded-xl border border-slate-300 bg-white py-3 pl-10 pr-4 text-base text-slate-950 outline-none transition placeholder:text-slate-500 focus:border-sky-400 focus:ring-4 focus:ring-sky-100 sm:py-4 sm:pl-12 sm:pr-5 sm:text-lg"
+              rows={3}
+              placeholder="Share any details about your home, schedule, or priorities."
+              className="box-border min-w-0 w-full max-w-full resize-none rounded-xl border border-sky-soft bg-white py-3 pl-10 pr-4 text-base text-navy outline-none transition placeholder:text-navy/40 focus:border-sky-accent focus:ring-2 focus:ring-sky-soft sm:pl-12"
             />
           </span>
         </label>
@@ -232,21 +221,14 @@ export default function QuoteForm() {
       <button
         type="submit"
         disabled={isSubmitting}
-        className="mt-6 w-full rounded-full bg-sky-500 px-6 py-3.5 text-sm font-black text-white shadow-xl shadow-sky-100 transition hover:-translate-y-0.5 hover:bg-sky-600 disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:translate-y-0 sm:mt-8 sm:px-7 sm:py-4 sm:text-base"
+        className="mt-6 w-full rounded-full bg-navy px-6 py-4 text-sm font-semibold text-white transition hover:bg-navy-dark disabled:cursor-not-allowed disabled:opacity-70 sm:mt-8"
       >
-        {isSubmitting ? "Sending..." : "Request My Quote"}
+        {isSubmitting ? "Sending..." : "Request a Quote →"}
       </button>
 
       {error ? (
-        <p className="mt-4 rounded-2xl bg-red-50 p-4 text-sm font-semibold leading-6 text-red-800">
+        <p className="mt-4 rounded-2xl bg-red-50 p-4 text-sm font-medium leading-6 text-red-800">
           {error}
-        </p>
-      ) : null}
-
-      {submitted ? (
-        <p className="mt-4 rounded-2xl bg-sky-50 p-4 text-sm font-semibold leading-6 text-sky-800">
-          Thanks! Your quote request was sent. Faith will follow up with you
-          soon.
         </p>
       ) : null}
     </form>
