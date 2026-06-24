@@ -1,10 +1,16 @@
 "use client";
 
+import {
+  cleaningServiceOptions,
+  contactMethodOptions,
+  referralSourceOptions,
+  sqftOptions,
+} from "@/lib/quote";
 import type { FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-type FieldIconName = "user" | "mail" | "phone" | "pin" | "message";
+type FieldIconName = "user" | "mail" | "phone" | "pin" | "message" | "home";
 
 function FieldIcon({ name }: { name: FieldIconName }) {
   const paths = {
@@ -36,6 +42,13 @@ function FieldIcon({ name }: { name: FieldIconName }) {
         <path d="M8 13h5" />
       </>
     ),
+    home: (
+      <>
+        <path d="M3 11.5 12 4l9 7.5" />
+        <path d="M5 10.5V21h14V10.5" />
+        <path d="M9 21v-6h6v6" />
+      </>
+    ),
   };
 
   return (
@@ -53,6 +66,9 @@ function FieldIcon({ name }: { name: FieldIconName }) {
     </svg>
   );
 }
+
+const fieldClassName =
+  "box-border min-w-0 w-full max-w-full rounded-xl border border-sky-soft bg-white py-3 pl-10 pr-4 text-base text-navy outline-none transition placeholder:text-navy/40 focus:border-sky-accent focus:ring-2 focus:ring-sky-soft sm:pl-12";
 
 function getValue(formData: FormData, name: string) {
   return String(formData.get(name) || "");
@@ -92,8 +108,57 @@ function TextField({
           type={type}
           autoComplete={autoComplete}
           placeholder={placeholder}
-          className="box-border min-w-0 w-full max-w-full rounded-xl border border-sky-soft bg-white py-3 pl-10 pr-4 text-base text-navy outline-none transition placeholder:text-navy/40 focus:border-sky-accent focus:ring-2 focus:ring-sky-soft sm:pl-12"
+          className={fieldClassName}
         />
+      </span>
+    </label>
+  );
+}
+
+function SelectField({
+  label,
+  name,
+  placeholder,
+  options,
+  required = false,
+  icon,
+}: Readonly<{
+  label: string;
+  name: string;
+  placeholder: string;
+  options: readonly string[];
+  required?: boolean;
+  icon: FieldIconName;
+}>) {
+  return (
+    <label className="block">
+      <span className="text-sm font-semibold text-navy">
+        {label}
+        {required ? " *" : ""}
+      </span>
+      <span className="relative mt-2 block min-w-0">
+        <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sky-accent sm:left-4">
+          <FieldIcon name={icon} />
+        </span>
+        <select
+          suppressHydrationWarning
+          required={required}
+          name={name}
+          defaultValue=""
+          className={`${fieldClassName} appearance-none bg-[length:1rem] bg-[right_1rem_center] bg-no-repeat pr-10`}
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%237ec8e8'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m6 9 6 6 6-6'/%3E%3C/svg%3E")`,
+          }}
+        >
+          <option value="" disabled>
+            {placeholder}
+          </option>
+          {options.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
+        </select>
       </span>
     </label>
   );
@@ -117,6 +182,10 @@ export default function QuoteForm() {
       email: getValue(formData, "email"),
       phone: getValue(formData, "phone"),
       town: getValue(formData, "town"),
+      desiredService: getValue(formData, "desiredService"),
+      sqft: getValue(formData, "sqft"),
+      referralSource: getValue(formData, "referralSource"),
+      contactMethod: getValue(formData, "contactMethod"),
       message: getValue(formData, "message"),
     };
 
@@ -192,6 +261,14 @@ export default function QuoteForm() {
           autoComplete="tel"
           icon="phone"
         />
+        <SelectField
+          required
+          label="Preferred Contact Method"
+          name="contactMethod"
+          placeholder="Select contact method"
+          options={contactMethodOptions}
+          icon="mail"
+        />
         <TextField
           required
           label="Town"
@@ -199,6 +276,33 @@ export default function QuoteForm() {
           placeholder="e.g. Plymouth, Duxbury"
           autoComplete="address-level2"
           icon="pin"
+        />
+
+        <SelectField
+          required
+          label="Desired Service"
+          name="desiredService"
+          placeholder="Select a service"
+          options={cleaningServiceOptions}
+          icon="home"
+        />
+
+        <SelectField
+          required
+          label="Approx. Square Footage"
+          name="sqft"
+          placeholder="Select home size"
+          options={sqftOptions}
+          icon="home"
+        />
+
+        <SelectField
+          required
+          label="How Did You Hear About Us?"
+          name="referralSource"
+          placeholder="Select an option"
+          options={referralSourceOptions}
+          icon="message"
         />
 
         <label className="block min-w-0">
@@ -212,7 +316,7 @@ export default function QuoteForm() {
               name="message"
               rows={3}
               placeholder="Share any details about your home, schedule, or priorities."
-              className="box-border min-w-0 w-full max-w-full resize-none rounded-xl border border-sky-soft bg-white py-3 pl-10 pr-4 text-base text-navy outline-none transition placeholder:text-navy/40 focus:border-sky-accent focus:ring-2 focus:ring-sky-soft sm:pl-12"
+              className={`${fieldClassName} resize-none`}
             />
           </span>
         </label>

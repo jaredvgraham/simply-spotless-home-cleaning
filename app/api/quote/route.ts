@@ -3,6 +3,12 @@ import {
   getMailTransporter,
   quoteRecipientEmail,
 } from "@/backend/lib/mail";
+import {
+  cleaningServiceOptions,
+  contactMethodOptions,
+  referralSourceOptions,
+  sqftOptions,
+} from "@/lib/quote";
 import { NextResponse } from "next/server";
 
 type QuotePayload = {
@@ -11,6 +17,10 @@ type QuotePayload = {
   email?: string;
   phone?: string;
   town?: string;
+  desiredService?: string;
+  sqft?: string;
+  referralSource?: string;
+  contactMethod?: string;
   message?: string;
 };
 
@@ -18,7 +28,22 @@ function getString(value: unknown) {
   return typeof value === "string" ? value.trim() : "";
 }
 
-function buildEmailBody(details: Required<QuotePayload>) {
+function isValidOption(value: string, options: readonly string[]) {
+  return options.includes(value);
+}
+
+function buildEmailBody(details: {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  town: string;
+  desiredService: string;
+  sqft: string;
+  referralSource: string;
+  contactMethod: string;
+  message: string;
+}) {
   return [
     "New cleaning quote request from Simply Spotless Cleaning LLC.",
     "",
@@ -26,7 +51,11 @@ function buildEmailBody(details: Required<QuotePayload>) {
     `Last Name: ${details.lastName}`,
     `Email: ${details.email}`,
     `Phone: ${details.phone}`,
+    `Preferred Contact Method: ${details.contactMethod}`,
     `Town: ${details.town}`,
+    `Desired Service: ${details.desiredService}`,
+    `Approx. Square Footage: ${details.sqft}`,
+    `How Did You Hear About Us: ${details.referralSource}`,
     "",
     "Message:",
     details.message || "No message provided.",
@@ -51,12 +80,55 @@ export async function POST(request: Request) {
     email: getString(payload.email),
     phone: getString(payload.phone),
     town: getString(payload.town),
+    desiredService: getString(payload.desiredService),
+    sqft: getString(payload.sqft),
+    referralSource: getString(payload.referralSource),
+    contactMethod: getString(payload.contactMethod),
     message: getString(payload.message),
   };
 
-  if (!details.email || !details.phone || !details.town) {
+  if (
+    !details.email ||
+    !details.phone ||
+    !details.town ||
+    !details.desiredService ||
+    !details.sqft ||
+    !details.referralSource ||
+    !details.contactMethod
+  ) {
     return NextResponse.json(
-      { error: "Email, phone, and town are required." },
+      {
+        error:
+          "Email, phone, town, desired service, square footage, referral source, and contact method are required.",
+      },
+      { status: 400 },
+    );
+  }
+
+  if (!isValidOption(details.desiredService, cleaningServiceOptions)) {
+    return NextResponse.json(
+      { error: "Please select a valid service." },
+      { status: 400 },
+    );
+  }
+
+  if (!isValidOption(details.sqft, sqftOptions)) {
+    return NextResponse.json(
+      { error: "Please select a valid square footage range." },
+      { status: 400 },
+    );
+  }
+
+  if (!isValidOption(details.referralSource, referralSourceOptions)) {
+    return NextResponse.json(
+      { error: "Please select a valid referral source." },
+      { status: 400 },
+    );
+  }
+
+  if (!isValidOption(details.contactMethod, contactMethodOptions)) {
+    return NextResponse.json(
+      { error: "Please select a valid contact method." },
       { status: 400 },
     );
   }

@@ -385,15 +385,12 @@ export default function Home() {
       >
         <div className="mx-auto max-w-3xl">
           <div className="mb-8 text-center">
-            <p className="text-xs font-bold uppercase tracking-[0.25em] text-sky-accent">
-              Get in Touch
-            </p>
-            <h2 className="mt-3 font-serif text-3xl text-navy sm:text-4xl">
-              Request a Free Quote
+            <h2 className="font-serif text-3xl text-navy sm:text-4xl">
+              Get a cleaning quote for your home.
             </h2>
             <p className="mt-3 text-base leading-7 text-navy/70">
-              Share a few details about your home and schedule. You&apos;ll
-              receive a personalized quote with recommended service options.
+              Share a few quick details, and we&apos;ll reach out with a
+              personalized estimate.
             </p>
           </div>
           <QuoteForm />
