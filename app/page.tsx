@@ -463,6 +463,16 @@ export default function Home() {
               <li>
                 <NavLink href="#contact">Contact</NavLink>
               </li>
+              <li>
+                <a className="transition hover:text-navy" href="/privacy">
+                  Privacy Policy
+                </a>
+              </li>
+              <li>
+                <a className="transition hover:text-navy" href="/terms">
+                  Terms of Service
+                </a>
+              </li>
             </ul>
           </div>
 
