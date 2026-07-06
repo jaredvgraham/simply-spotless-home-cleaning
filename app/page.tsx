@@ -1,4 +1,10 @@
 import QuoteForm from "@/components/QuoteForm";
+import {
+  FadeIn,
+  MotionAnchor,
+  Stagger,
+  StaggerItem,
+} from "@/components/Motion";
 import { companyContactEmail } from "@/backend/lib/mail";
 import Image from "next/image";
 
@@ -116,12 +122,12 @@ function PrimaryButton({
   className?: string;
 }) {
   return (
-    <a
+    <MotionAnchor
       href={href}
       className={`inline-flex items-center justify-center rounded-full bg-navy px-6 py-3 text-sm font-semibold text-white transition hover:bg-navy-dark ${className}`}
     >
       {children}
-    </a>
+    </MotionAnchor>
   );
 }
 
@@ -256,6 +262,7 @@ export default function Home() {
         className="mx-auto grid max-w-7xl items-center gap-10 px-4 pb-16 pt-4 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-8 lg:pb-24 lg:pt-8"
       >
         <div id="about">
+        <FadeIn delay={0.05}>
           <p className="mb-5 inline-block rounded-full bg-sky-soft px-4 py-2 text-xs font-bold uppercase tracking-[0.15em] text-navy">
             Plymouth, MA &amp; Surrounding Areas
           </p>
@@ -282,9 +289,10 @@ export default function Home() {
               View Services
             </a>
           </div>
+        </FadeIn>
         </div>
 
-        <div className="relative">
+        <FadeIn className="relative" delay={0.12}>
           <div className="overflow-hidden rounded-[2rem] shadow-xl shadow-sky-soft">
             <div className="relative aspect-[4/3]">
               <Image
@@ -297,24 +305,26 @@ export default function Home() {
               />
             </div>
           </div>
-        </div>
+        </FadeIn>
       </section>
 
       <section
         id="why-choose-us"
         className="border-y border-sky-soft bg-white px-4 py-14 sm:px-6 lg:px-8"
       >
-        <div className="mx-auto grid max-w-7xl gap-10 sm:grid-cols-2 lg:grid-cols-5 lg:gap-6">
+        <Stagger className="mx-auto grid max-w-7xl gap-10 sm:grid-cols-2 lg:grid-cols-5 lg:gap-6">
           {values.map((item) => (
-            <article key={item.title} className="text-center">
+            <StaggerItem key={item.title} className="text-center">
+              <article>
               <div className="mx-auto mb-4 flex size-12 items-center justify-center rounded-full bg-sky-soft text-sky-accent">
                 <Icon name={item.icon} className="size-5" />
               </div>
               <h3 className="font-serif text-lg text-navy">{item.title}</h3>
               <p className="mt-2 text-sm leading-6 text-navy/70">{item.text}</p>
-            </article>
+              </article>
+            </StaggerItem>
           ))}
-        </div>
+        </Stagger>
       </section>
 
       <section id="services" className="px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
@@ -328,12 +338,10 @@ export default function Home() {
           </h2>
         </div>
 
-        <div className="mx-auto mt-12 grid max-w-7xl gap-6 sm:grid-cols-2 xl:grid-cols-4">
+        <Stagger className="mx-auto mt-12 grid max-w-7xl gap-6 sm:grid-cols-2 xl:grid-cols-4">
           {services.map((service) => (
-            <article
-              key={service.title}
-              className="overflow-hidden rounded-3xl border border-sky-soft bg-white shadow-sm"
-            >
+            <StaggerItem key={service.title}>
+              <article className="overflow-hidden rounded-3xl border border-sky-soft bg-white shadow-sm">
               <div className="relative">
                 <div className="relative aspect-[4/3]">
                   <Image
@@ -374,9 +382,10 @@ export default function Home() {
                   ))}
                 </ul>
               </div>
-            </article>
+              </article>
+            </StaggerItem>
           ))}
-        </div>
+        </Stagger>
       </section>
 
       <section
@@ -384,7 +393,7 @@ export default function Home() {
         className="bg-sky-soft px-4 py-16 sm:px-6 lg:px-8"
       >
         <div className="mx-auto max-w-3xl">
-          <div className="mb-8 text-center">
+          <FadeIn className="mb-8 text-center">
             <h2 className="font-serif text-3xl text-navy sm:text-4xl">
               Get a cleaning quote for your home.
             </h2>
@@ -392,7 +401,7 @@ export default function Home() {
               Share a few quick details, and we&apos;ll reach out with a
               personalized estimate.
             </p>
-          </div>
+          </FadeIn>
           <QuoteForm />
         </div>
       </section>
@@ -402,7 +411,7 @@ export default function Home() {
         className="mx-4 mb-16 overflow-hidden rounded-[2rem] bg-sky-soft sm:mx-6 lg:mx-8"
       >
         <div className="mx-auto grid max-w-7xl items-center gap-8 px-6 py-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-12 lg:px-12 lg:py-16">
-          <div className="flex justify-center lg:justify-start">
+          <FadeIn className="flex justify-center lg:justify-start">
             <div className="relative size-56 overflow-hidden rounded-full shadow-lg sm:size-64">
               <Image
                 src="https://images.unsplash.com/photo-1628177142898-93e36e4e3a50?w=500&q=80"
@@ -412,9 +421,9 @@ export default function Home() {
                 className="object-cover"
               />
             </div>
-          </div>
+          </FadeIn>
 
-          <div>
+          <FadeIn delay={0.08}>
             <p className="text-xs font-bold uppercase tracking-[0.25em] text-sky-accent">
               Ready for a Spotless Home?
             </p>
@@ -429,11 +438,12 @@ export default function Home() {
             <PrimaryButton href="#quote-form" className="mt-8">
               Request a Quote →
             </PrimaryButton>
-          </div>
+          </FadeIn>
         </div>
       </section>
 
-      <footer
+      <FadeIn>
+        <footer
         id="contact"
         className="border-t border-sky-soft bg-white px-4 py-14 sm:px-6 lg:px-8"
       >
@@ -512,7 +522,8 @@ export default function Home() {
             />
           </div>
         </div>
-      </footer>
+        </footer>
+      </FadeIn>
     </main>
   );
 }

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { FadeIn } from "@/components/Motion";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -31,7 +32,7 @@ export default function ThankYouPage() {
       </header>
 
       <section className="flex flex-1 items-center px-4 py-12 sm:px-6 lg:px-8">
-        <div className="mx-auto w-full max-w-xl text-center">
+        <FadeIn className="mx-auto w-full max-w-xl text-center">
           <div className="mx-auto mb-6 flex size-16 items-center justify-center rounded-full bg-sky-soft text-sky-accent">
             <svg
               aria-hidden="true"
@@ -62,18 +63,18 @@ export default function ThankYouPage() {
           <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:justify-center sm:gap-4">
             <Link
               href="/"
-              className="inline-flex items-center justify-center rounded-full bg-navy px-6 py-3 text-sm font-semibold text-white transition hover:bg-navy-dark"
+              className="inline-flex items-center justify-center rounded-full bg-navy px-6 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-navy-dark"
             >
               Return Home
             </Link>
             <Link
               href="/#services"
-              className="inline-flex items-center justify-center rounded-full border-2 border-navy px-6 py-3 text-sm font-semibold text-navy transition hover:bg-sky-soft"
+              className="inline-flex items-center justify-center rounded-full border-2 border-navy px-6 py-3 text-sm font-semibold text-navy transition hover:-translate-y-0.5 hover:bg-sky-soft"
             >
               View Services
             </Link>
           </div>
-        </div>
+        </FadeIn>
       </section>
     </main>
   );
