@@ -16,6 +16,7 @@ type IconName =
   | "leaf"
   | "box"
   | "calendar"
+  | "plus"
   | "check"
   | "facebook";
 
@@ -71,6 +72,12 @@ function Icon({
         <path d="M17 3v4" />
         <path d="M4 8h16" />
         <path d="M5 5h14v16H5z" />
+      </>
+    ),
+    plus: (
+      <>
+        <path d="M12 5v14" />
+        <path d="M5 12h14" />
       </>
     ),
     check: <path d="m5 12 4 4 10-10" />,
@@ -131,6 +138,57 @@ function PrimaryButton({
   );
 }
 
+function ServiceCard({
+  service,
+}: {
+  service: {
+    icon: IconName;
+    title: string;
+    image: string;
+    description: string;
+    details: string[];
+  };
+}) {
+  return (
+    <article className="h-full overflow-hidden rounded-3xl border border-sky-soft bg-white shadow-sm">
+      <div className="relative">
+        <div className="relative aspect-[4/3]">
+          <Image
+            src={service.image}
+            alt={service.title}
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="object-cover"
+          />
+        </div>
+        <span className="absolute -bottom-5 left-1/2 flex size-10 -translate-x-1/2 items-center justify-center rounded-full border-4 border-white bg-sky-soft text-sky-accent">
+          <Icon name={service.icon} className="size-4" />
+        </span>
+      </div>
+
+      <div className="px-5 pb-6 pt-8 text-center">
+        <h3 className="font-serif text-xl text-navy">{service.title}</h3>
+        <p className="mt-3 text-sm leading-6 text-navy/70">
+          {service.description}
+        </p>
+        <ul className="mt-5 space-y-2.5 text-left">
+          {service.details.map((detail) => (
+            <li
+              key={detail}
+              className="flex items-start gap-2.5 text-sm text-navy/80"
+            >
+              <span className="mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full bg-sky-soft text-sky-accent">
+                <Icon name="check" className="size-2.5" strokeWidth="3" />
+              </span>
+              {detail}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </article>
+  );
+}
+
 export default function Home() {
   const values = [
     {
@@ -185,7 +243,7 @@ export default function Home() {
         "A more thorough clean for when your home needs extra care and attention.",
       details: [
         "Everything in a Standard Clean",
-        "Plus inside appliances (oven, fridge)",
+        "Plus inside appliances (oven)",
         "Baseboards & trim",
         "Interior windows",
         "Detailed scrubbing of buildup",
@@ -220,6 +278,23 @@ export default function Home() {
         "Consistent, reliable service",
         "Save time and enjoy a cleaner home",
         "Peace of mind",
+      ],
+    },
+    {
+      icon: "plus" as const,
+      title: "Add-Ons & Extras",
+      image:
+        "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=700&q=80",
+      description:
+        "Need a little more? Add extras to any clean to match what your home needs.",
+      details: [
+        "Clean inside fridge",
+        "Inside oven",
+        "Blinds",
+        "Inside cabinets and drawers",
+        "Fold laundry",
+        "Change bed linens",
+        "Custom requests welcome",
       ],
     },
   ];
@@ -342,51 +417,21 @@ export default function Home() {
           </h2>
         </div>
 
-        <Stagger className="mx-auto mt-12 grid max-w-7xl gap-6 sm:grid-cols-2 xl:grid-cols-4">
-          {services.map((service) => (
+        <Stagger className="mx-auto mt-12 grid max-w-7xl gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {services.slice(0, 3).map((service) => (
             <StaggerItem key={service.title}>
-              <article className="overflow-hidden rounded-3xl border border-sky-soft bg-white shadow-sm">
-                <div className="relative">
-                  <div className="relative aspect-[4/3]">
-                    <Image
-                      src={service.image}
-                      alt={service.title}
-                      fill
-                      sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 25vw"
-                      className="object-cover"
-                    />
-                  </div>
-                  <span className="absolute -bottom-5 left-1/2 flex size-10 -translate-x-1/2 items-center justify-center rounded-full border-4 border-white bg-sky-soft text-sky-accent">
-                    <Icon name={service.icon} className="size-4" />
-                  </span>
-                </div>
+              <ServiceCard service={service} />
+            </StaggerItem>
+          ))}
+        </Stagger>
 
-                <div className="px-5 pb-6 pt-8 text-center">
-                  <h3 className="font-serif text-xl text-navy">
-                    {service.title}
-                  </h3>
-                  <p className="mt-3 text-sm leading-6 text-navy/70">
-                    {service.description}
-                  </p>
-                  <ul className="mt-5 space-y-2.5 text-left">
-                    {service.details.map((detail) => (
-                      <li
-                        key={detail}
-                        className="flex items-start gap-2.5 text-sm text-navy/80"
-                      >
-                        <span className="mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full bg-sky-soft text-sky-accent">
-                          <Icon
-                            name="check"
-                            className="size-2.5"
-                            strokeWidth="3"
-                          />
-                        </span>
-                        {detail}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </article>
+        <Stagger className="mx-auto mt-6 flex max-w-7xl flex-wrap justify-center gap-6">
+          {services.slice(3).map((service) => (
+            <StaggerItem
+              key={service.title}
+              className="w-full sm:w-[calc(50%-0.75rem)] lg:w-[calc((100%-3rem)/3)]"
+            >
+              <ServiceCard service={service} />
             </StaggerItem>
           ))}
         </Stagger>
