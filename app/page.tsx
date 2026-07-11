@@ -262,34 +262,36 @@ export default function Home() {
         className="mx-auto grid max-w-7xl items-center gap-10 px-4 pb-16 pt-4 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-8 lg:pb-24 lg:pt-8"
       >
         <div id="about">
-        <FadeIn delay={0.05}>
-          <p className="mb-5 inline-block rounded-full bg-sky-soft px-4 py-2 text-xs font-bold uppercase tracking-[0.15em] text-navy">
-            Plymouth, MA &amp; Surrounding Areas
-          </p>
-          <h1 className="font-serif text-4xl leading-tight text-navy sm:text-5xl lg:text-[3.25rem] lg:leading-[1.15]">
-            A clean home.
-            <br />
-            More time for{" "}
-            <span className="font-script text-4xl text-sky-accent sm:text-5xl lg:text-[3rem]">
-              what matters
-            </span>
-            <span className="font-script text-sky-accent"> ♡</span>
-          </h1>
-          <p className="mt-6 max-w-xl text-base leading-7 text-navy/75 sm:text-lg sm:leading-8">
-            Reliable home cleaning tailored to your space and schedule. Every
-            visit focuses on the details that help your home feel calm, fresh,
-            and well cared for.
-          </p>
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:gap-4">
-            <PrimaryButton href="#quote-form">Request a Quote →</PrimaryButton>
-            <a
-              href="#services"
-              className="inline-flex items-center justify-center rounded-full border-2 border-navy px-6 py-3 text-sm font-semibold text-navy transition hover:bg-sky-soft"
-            >
-              View Services
-            </a>
-          </div>
-        </FadeIn>
+          <FadeIn delay={0.05}>
+            <p className="mb-5 inline-block rounded-full bg-sky-soft px-4 py-2 text-xs font-bold uppercase tracking-[0.15em] text-navy">
+              Plymouth, MA &amp; Surrounding Areas
+            </p>
+            <h1 className="font-serif text-4xl leading-tight text-navy sm:text-5xl lg:text-[3.25rem] lg:leading-[1.15]">
+              A clean home.
+              <br />
+              More time for{" "}
+              <span className="font-script text-4xl text-sky-accent sm:text-5xl lg:text-[3rem]">
+                what matters
+              </span>
+              <span className="font-script text-sky-accent"> ♡</span>
+            </h1>
+            <p className="mt-6 max-w-xl text-base leading-7 text-navy/75 sm:text-lg sm:leading-8">
+              Reliable home cleaning tailored to your space and schedule. Every
+              visit focuses on the details that help your home feel calm, fresh,
+              and well cared for.
+            </p>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:gap-4">
+              <PrimaryButton href="#quote-form">
+                Request a Quote →
+              </PrimaryButton>
+              <a
+                href="#services"
+                className="inline-flex items-center justify-center rounded-full border-2 border-navy px-6 py-3 text-sm font-semibold text-navy transition hover:bg-sky-soft"
+              >
+                View Services
+              </a>
+            </div>
+          </FadeIn>
         </div>
 
         <FadeIn className="relative" delay={0.12}>
@@ -316,11 +318,13 @@ export default function Home() {
           {values.map((item) => (
             <StaggerItem key={item.title} className="text-center">
               <article>
-              <div className="mx-auto mb-4 flex size-12 items-center justify-center rounded-full bg-sky-soft text-sky-accent">
-                <Icon name={item.icon} className="size-5" />
-              </div>
-              <h3 className="font-serif text-lg text-navy">{item.title}</h3>
-              <p className="mt-2 text-sm leading-6 text-navy/70">{item.text}</p>
+                <div className="mx-auto mb-4 flex size-12 items-center justify-center rounded-full bg-sky-soft text-sky-accent">
+                  <Icon name={item.icon} className="size-5" />
+                </div>
+                <h3 className="font-serif text-lg text-navy">{item.title}</h3>
+                <p className="mt-2 text-sm leading-6 text-navy/70">
+                  {item.text}
+                </p>
               </article>
             </StaggerItem>
           ))}
@@ -342,46 +346,46 @@ export default function Home() {
           {services.map((service) => (
             <StaggerItem key={service.title}>
               <article className="overflow-hidden rounded-3xl border border-sky-soft bg-white shadow-sm">
-              <div className="relative">
-                <div className="relative aspect-[4/3]">
-                  <Image
-                    src={service.image}
-                    alt={service.title}
-                    fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 25vw"
-                    className="object-cover"
-                  />
+                <div className="relative">
+                  <div className="relative aspect-[4/3]">
+                    <Image
+                      src={service.image}
+                      alt={service.title}
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 25vw"
+                      className="object-cover"
+                    />
+                  </div>
+                  <span className="absolute -bottom-5 left-1/2 flex size-10 -translate-x-1/2 items-center justify-center rounded-full border-4 border-white bg-sky-soft text-sky-accent">
+                    <Icon name={service.icon} className="size-4" />
+                  </span>
                 </div>
-                <span className="absolute -bottom-5 left-1/2 flex size-10 -translate-x-1/2 items-center justify-center rounded-full border-4 border-white bg-sky-soft text-sky-accent">
-                  <Icon name={service.icon} className="size-4" />
-                </span>
-              </div>
 
-              <div className="px-5 pb-6 pt-8 text-center">
-                <h3 className="font-serif text-xl text-navy">
-                  {service.title}
-                </h3>
-                <p className="mt-3 text-sm leading-6 text-navy/70">
-                  {service.description}
-                </p>
-                <ul className="mt-5 space-y-2.5 text-left">
-                  {service.details.map((detail) => (
-                    <li
-                      key={detail}
-                      className="flex items-start gap-2.5 text-sm text-navy/80"
-                    >
-                      <span className="mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full bg-sky-soft text-sky-accent">
-                        <Icon
-                          name="check"
-                          className="size-2.5"
-                          strokeWidth="3"
-                        />
-                      </span>
-                      {detail}
-                    </li>
-                  ))}
-                </ul>
-              </div>
+                <div className="px-5 pb-6 pt-8 text-center">
+                  <h3 className="font-serif text-xl text-navy">
+                    {service.title}
+                  </h3>
+                  <p className="mt-3 text-sm leading-6 text-navy/70">
+                    {service.description}
+                  </p>
+                  <ul className="mt-5 space-y-2.5 text-left">
+                    {service.details.map((detail) => (
+                      <li
+                        key={detail}
+                        className="flex items-start gap-2.5 text-sm text-navy/80"
+                      >
+                        <span className="mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full bg-sky-soft text-sky-accent">
+                          <Icon
+                            name="check"
+                            className="size-2.5"
+                            strokeWidth="3"
+                          />
+                        </span>
+                        {detail}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </article>
             </StaggerItem>
           ))}
@@ -444,84 +448,84 @@ export default function Home() {
 
       <FadeIn>
         <footer
-        id="contact"
-        className="border-t border-sky-soft bg-white px-4 py-14 sm:px-6 lg:px-8"
-      >
-        <div className="mx-auto grid max-w-7xl gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
-          <div>
-            <p className="font-serif text-lg text-navy">
-              Simply Spotless Cleaning Services
-            </p>
-            <p className="mt-3 text-sm leading-6 text-navy/70">
-              Plymouth, MA &amp; Surrounding Areas
-            </p>
-            <p className="mt-1 text-sm text-navy/70">Fully Insured</p>
-          </div>
+          id="contact"
+          className="border-t border-sky-soft bg-white px-4 py-14 sm:px-6 lg:px-8"
+        >
+          <div className="mx-auto grid max-w-7xl gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
+            <div>
+              <p className="font-serif text-lg text-navy">
+                Simply Spotless Cleaning Services
+              </p>
+              <p className="mt-3 text-sm leading-6 text-navy/70">
+                Plymouth, MA &amp; Surrounding Areas
+              </p>
+              <p className="mt-1 text-sm text-navy/70">Fully Insured</p>
+            </div>
 
-          <div>
-            <p className="text-sm font-bold text-navy">Quick Links</p>
-            <ul className="mt-4 space-y-2.5">
-              <li>
-                <NavLink href="#services">Services</NavLink>
-              </li>
-              <li>
-                <NavLink href="#about">About</NavLink>
-              </li>
-              <li>
-                <NavLink href="#reviews">Reviews</NavLink>
-              </li>
-              <li>
-                <NavLink href="#contact">Contact</NavLink>
-              </li>
-              <li>
-                <a className="transition hover:text-navy" href="/privacy">
-                  Privacy Policy
-                </a>
-              </li>
-              <li>
-                <a className="transition hover:text-navy" href="/terms">
-                  Terms of Service
-                </a>
-              </li>
-            </ul>
-          </div>
+            <div>
+              <p className="text-sm font-bold text-navy">Quick Links</p>
+              <ul className="mt-4 space-y-2.5">
+                <li>
+                  <NavLink href="#services">Services</NavLink>
+                </li>
+                <li>
+                  <NavLink href="#about">About</NavLink>
+                </li>
+                <li>
+                  <NavLink href="#reviews">Reviews</NavLink>
+                </li>
+                <li>
+                  <NavLink href="#contact">Contact</NavLink>
+                </li>
+                <li>
+                  <a className="transition hover:text-navy" href="/privacy">
+                    Privacy Policy
+                  </a>
+                </li>
+                <li>
+                  <a className="transition hover:text-navy" href="/terms">
+                    Terms of Service
+                  </a>
+                </li>
+              </ul>
+            </div>
 
-          <div>
-            <p className="text-sm font-bold text-navy">Get in Touch</p>
-            <ul className="mt-4 space-y-2.5 text-sm text-navy/70">
-              <li>
-                <a
-                  href="tel:+15085706658"
-                  className="transition hover:text-navy"
-                >
-                  (508) 570-6658
-                </a>
-              </li>
-              <li>
-                <a
-                  href={`mailto:${companyContactEmail}`}
-                  className="break-all transition hover:text-navy"
-                >
-                  {companyContactEmail}
-                </a>
-              </li>
-              <li className="flex items-center gap-2 pt-1">
-                <Icon name="facebook" className="size-4 text-sky-accent" />
-                <span>simplyspotlessclean</span>
-              </li>
-            </ul>
-          </div>
+            <div>
+              <p className="text-sm font-bold text-navy">Get in Touch</p>
+              <ul className="mt-4 space-y-2.5 text-sm text-navy/70">
+                <li>
+                  <a
+                    href="tel:+15085706658"
+                    className="transition hover:text-navy"
+                  >
+                    (508) 570-6658
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href={`mailto:${companyContactEmail}`}
+                    className="break-all transition hover:text-navy"
+                  >
+                    {companyContactEmail}
+                  </a>
+                </li>
+                <li className="flex items-center gap-2 pt-1">
+                  <Icon name="facebook" className="size-4 text-sky-accent" />
+                  <span>simplyspotlessclean</span>
+                </li>
+              </ul>
+            </div>
 
-          <div className="flex items-start justify-start sm:justify-end">
-            <Image
-              src="/logo.png"
-              alt="Simply Spotless Cleaning Services logo"
-              width={120}
-              height={120}
-              className="h-24 w-24 object-contain sm:h-28 sm:w-28"
-            />
+            <div className="flex items-start justify-start sm:justify-end">
+              <Image
+                src="/logo.png"
+                alt="Simply Spotless Cleaning Services logo"
+                width={120}
+                height={120}
+                className="h-24 w-24 object-contain sm:h-28 sm:w-28"
+              />
+            </div>
           </div>
-        </div>
         </footer>
       </FadeIn>
     </main>
