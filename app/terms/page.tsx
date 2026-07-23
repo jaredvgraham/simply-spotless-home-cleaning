@@ -3,9 +3,12 @@ import { companyLegalName, companyLocation, companyName } from "@/lib/site";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Terms of Service | Simply Spotless Cleaning Services",
+  title: "Terms of Service",
   description:
     "Terms of Service for Simply Spotless Cleaning Services home cleaning in Plymouth, MA and surrounding areas.",
+  alternates: {
+    canonical: "/terms",
+  },
 };
 
 const effectiveDate = "July 3, 2026";

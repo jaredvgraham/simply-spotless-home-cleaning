@@ -1,4 +1,5 @@
 import QuoteForm from "@/components/QuoteForm";
+import JsonLd from "@/components/JsonLd";
 import {
   FadeIn,
   MotionAnchor,
@@ -6,7 +7,13 @@ import {
   StaggerItem,
 } from "@/components/Motion";
 import { companyContactEmail } from "@/backend/lib/mail";
+import {
+  buildLocalBusinessJsonLd,
+  buildWebsiteJsonLd,
+} from "@/lib/seo";
+import { serviceTowns } from "@/lib/site";
 import Image from "next/image";
+import Link from "next/link";
 
 type IconName =
   | "sparkle"
@@ -301,6 +308,9 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-white">
+      <JsonLd data={buildLocalBusinessJsonLd()} />
+      <JsonLd data={buildWebsiteJsonLd()} />
+
       <header className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-5 sm:px-6 lg:px-8">
         <a href="#top" className="flex shrink-0 items-center gap-3">
           <Image
@@ -318,6 +328,7 @@ export default function Home() {
           className="hidden items-center gap-8 lg:flex"
         >
           <NavLink href="#services">Services</NavLink>
+          <NavLink href="#service-areas">Areas</NavLink>
           <NavLink href="#about">About</NavLink>
           <NavLink href="#why-choose-us">What to Expect</NavLink>
           <NavLink href="#reviews">Reviews</NavLink>
@@ -351,9 +362,9 @@ export default function Home() {
               <span className="font-script text-sky-accent"> ♡</span>
             </h1>
             <p className="mt-6 max-w-xl text-base leading-7 text-navy/75 sm:text-lg sm:leading-8">
-              Reliable home cleaning tailored to your space and schedule. Every
-              visit focuses on the details that help your home feel calm, fresh,
-              and well cared for.
+              Reliable house cleaning in Plymouth, MA and surrounding South Shore
+              towns. Every visit focuses on the details that help your home feel
+              calm, fresh, and well cared for.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:gap-4">
               <PrimaryButton href="#quote-form">
@@ -438,8 +449,42 @@ export default function Home() {
       </section>
 
       <section
+        id="service-areas"
+        className="bg-sky-soft px-4 py-16 sm:px-6 lg:px-8 lg:py-24"
+      >
+        <div className="mx-auto max-w-7xl">
+          <FadeIn className="mx-auto max-w-3xl text-center">
+            <p className="text-xs font-bold uppercase tracking-[0.25em] text-sky-accent">
+              Service Areas
+            </p>
+            <h2 className="mt-4 font-serif text-3xl text-navy sm:text-4xl lg:text-[2.75rem]">
+              House cleaning across the South Shore
+            </h2>
+            <p className="mt-4 text-base leading-7 text-navy/70">
+              Simply Spotless Cleaning Services proudly serves Plymouth, MA and
+              nearby towns. Choose your community below for local cleaning
+              details, or request a quote for your home.
+            </p>
+          </FadeIn>
+
+          <Stagger className="mt-10 grid gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+            {serviceTowns.map((town) => (
+              <StaggerItem key={town.slug}>
+                <Link
+                  href={`/areas/${town.slug}`}
+                  className="flex h-full items-center justify-center rounded-2xl border border-white/80 bg-white px-4 py-5 text-center text-sm font-semibold text-navy shadow-sm transition hover:border-sky-accent/40 hover:text-sky-accent"
+                >
+                  {town.name}, MA
+                </Link>
+              </StaggerItem>
+            ))}
+          </Stagger>
+        </div>
+      </section>
+
+      <section
         id="quote-form"
-        className="bg-sky-soft px-4 py-16 sm:px-6 lg:px-8"
+        className="bg-white px-4 py-16 sm:px-6 lg:px-8"
       >
         <div className="mx-auto max-w-3xl">
           <FadeIn className="mb-8 text-center">
@@ -502,7 +547,7 @@ export default function Home() {
                 Simply Spotless Cleaning Services
               </p>
               <p className="mt-3 text-sm leading-6 text-navy/70">
-                Plymouth, MA &amp; Surrounding Areas
+                Plymouth, MA &amp; Surrounding South Shore Areas
               </p>
               <p className="mt-1 text-sm text-navy/70">Fully Insured</p>
             </div>
@@ -512,6 +557,9 @@ export default function Home() {
               <ul className="mt-4 space-y-2.5">
                 <li>
                   <NavLink href="#services">Services</NavLink>
+                </li>
+                <li>
+                  <NavLink href="#service-areas">Service Areas</NavLink>
                 </li>
                 <li>
                   <NavLink href="#about">About</NavLink>
@@ -558,6 +606,19 @@ export default function Home() {
                   <Icon name="facebook" className="size-4 text-sky-accent" />
                   <span>simplyspotlessclean</span>
                 </li>
+              </ul>
+              <p className="mt-6 text-sm font-bold text-navy">Top Areas</p>
+              <ul className="mt-3 space-y-1.5 text-sm text-navy/70">
+                {serviceTowns.slice(0, 6).map((town) => (
+                  <li key={town.slug}>
+                    <Link
+                      href={`/areas/${town.slug}`}
+                      className="transition hover:text-navy"
+                    >
+                      {town.name}, MA
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
 

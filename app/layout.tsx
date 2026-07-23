@@ -1,5 +1,12 @@
 import type { Metadata } from "next";
 import { Dancing_Script, Inter, Playfair_Display } from "next/font/google";
+import {
+  companyName,
+  defaultDescription,
+  getSiteUrl,
+  primaryTown,
+  seoKeywords,
+} from "@/lib/site";
 import "./globals.css";
 
 const inter = Inter({
@@ -17,10 +24,57 @@ const dancingScript = Dancing_Script({
   subsets: ["latin"],
 });
 
+const siteUrl = getSiteUrl();
+
 export const metadata: Metadata = {
-  title: "Simply Spotless Cleaning Services | Duxbury, MA",
-  description:
-    "Simply Spotless Cleaning Services provides reliable, high-quality cleaning tailored to your home and your life in Duxbury, MA and surrounding areas.",
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: `${companyName} | House Cleaning in ${primaryTown}, MA`,
+    template: `%s | ${companyName}`,
+  },
+  description: defaultDescription,
+  keywords: [...seoKeywords],
+  applicationName: companyName,
+  authors: [{ name: companyName }],
+  creator: companyName,
+  publisher: companyName,
+  category: "Home cleaning",
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: siteUrl,
+    siteName: companyName,
+    title: `${companyName} | House Cleaning in ${primaryTown}, MA`,
+    description: defaultDescription,
+    images: [
+      {
+        url: "/logo.png",
+        width: 500,
+        height: 500,
+        alt: `${companyName} logo`,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary",
+    title: `${companyName} | House Cleaning in ${primaryTown}, MA`,
+    description: defaultDescription,
+    images: ["/logo.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
 };
 
 export default function RootLayout({

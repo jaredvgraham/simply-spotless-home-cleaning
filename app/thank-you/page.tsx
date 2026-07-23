@@ -4,9 +4,13 @@ import Image from "next/image";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Thank You | Simply Spotless Cleaning Services",
+  title: "Thank You",
   description:
     "Your quote request was received. You'll hear back shortly with next steps.",
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 export default function ThankYouPage() {

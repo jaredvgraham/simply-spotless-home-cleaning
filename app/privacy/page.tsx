@@ -3,9 +3,12 @@ import { companyLegalName, companyName } from "@/lib/site";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | Simply Spotless Cleaning Services",
+  title: "Privacy Policy",
   description:
     "Learn how Simply Spotless Cleaning Services collects, uses, and protects your personal information.",
+  alternates: {
+    canonical: "/privacy",
+  },
 };
 
 const effectiveDate = "July 3, 2026";
